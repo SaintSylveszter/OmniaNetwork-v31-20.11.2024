@@ -49,6 +49,8 @@ const Articles: React.FC = () => {
       SELECT
         a.id,
         a.title,
+        a.alternative_title,
+        a.slug,
         a.article_type_id,
         at.article_type as type_name,
         a.status,
@@ -233,70 +235,7 @@ const Articles: React.FC = () => {
         WHERE id = ${selectedArticle.id}
       `;
 
-      // Update sections
-      if (data.sections?.length) {
-        // Delete existing sections
-        await siteDb`
-          DELETE FROM article_mp_t10_sections
-          WHERE article_id = ${selectedArticle.id}
-        `;
-
-        // Insert new sections
-        await Promise.all(data.sections.map((section: any, index: number) =>
-          siteDb`
-            INSERT INTO article_mp_t10_sections (
-              article_id,
-              title,
-              content,
-              display_order
-            ) VALUES (
-              ${selectedArticle.id},
-              ${section.title},
-              ${section.content},
-              ${index * 10}
-            )
-          `
-        ));
-      }
-
-      // Update products
-      if (data.products?.length) {
-        // Delete existing products
-        await siteDb`
-          DELETE FROM article_mp_t10_products
-          WHERE article_id = ${selectedArticle.id}
-        `;
-
-        // Insert new products
-        await Promise.all(data.products.map((product: any, index: number) =>
-          siteDb`
-            INSERT INTO article_mp_t10_products (
-              article_id,
-              name,
-              image_url,
-              description,
-              pros,
-              cons,
-              affiliate_url,
-              brand_affiliate_url,
-              rating,
-              display_order
-            ) VALUES (
-              ${selectedArticle.id},
-              ${product.name},
-              ${product.image_url},
-              ${product.description},
-              ${JSON.stringify(product.pros)}::jsonb,
-              ${JSON.stringify(product.cons)}::jsonb,
-              ${product.affiliate_url},
-              ${product.brand_affiliate_url},
-              ${product.rating},
-              ${index * 10}
-            )
-          `
-        ));
-      }
-
+    
       await loadArticles();
       setIsEditModalOpen(false);
       setSelectedArticle(null);
@@ -336,15 +275,15 @@ const Articles: React.FC = () => {
     <div>  {/* Div părinte care învelește tot */}
     <div className="flex justify-between items-center mb-6">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Articles</h2>
-      <button
+      {/* <button
         onClick={() => setIsTypeSelectorOpen(true)}
         className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
         <Plus size={20} />
         <span>Add Article</span>
-      </button>
+      </button> */}
       <button
         onClick={() => setIsNewArticleModalOpen(true)}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
+        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
         <Plus size={20} />
         <span>Add New Article</span>
       </button>

@@ -15,6 +15,7 @@ interface FormData {
   title: string;
   slug: string;
   subtitle: string;
+  alternative_title: string;
   status: string;
   display_order: number;
 }
@@ -41,7 +42,8 @@ const NewBaseArticleForm: React.FC<NewArticleFormProps> = ({
   title: '',        // asigurăm valoare inițială goală
   slug: '',         // asigurăm valoare inițială goală
   subtitle: '',     // asigurăm valoare inițială goală
-  status: 'SCH',
+  alternative_title: '',        // asigurăm valoare inițială goală
+  status: 'Scheduled',
   display_order: 0
 });
 
@@ -104,6 +106,7 @@ const NewBaseArticleForm: React.FC<NewArticleFormProps> = ({
         title: formData.title,
         slug: formData.slug,
         subtitle: formData.subtitle,
+        alternative_title: formData.alternative_title,
         status: formData.status,
         display_order: formData.display_order
       };
@@ -189,7 +192,7 @@ const NewBaseArticleForm: React.FC<NewArticleFormProps> = ({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+            className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
           >
             {isSubmitting ? 'Saving...' : 'Save Article'}
           </button>

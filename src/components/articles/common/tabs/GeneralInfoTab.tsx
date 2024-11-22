@@ -23,6 +23,7 @@ interface FormData {
   title: string;
   slug: string;
   subtitle: string;
+  alternative_title: string;
   category_id: number | null;
   author_id: number | null;
 }
@@ -143,7 +144,7 @@ const GeneralInfoTab: React.FC<GeneralInfoTabProps> = ({
       language: siteLanguage
     });
     
-    onUpdateForm('alternativeTitle', result.title); // adăugat aici
+    onUpdateForm('alternative_title', result.title); // adăugat aici
     onUpdateForm('subtitle', result.subtitle);
   } catch (error) {
     console.error('Error generating title/subtitle:', error);
@@ -175,44 +176,6 @@ const GeneralInfoTab: React.FC<GeneralInfoTabProps> = ({
           className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           placeholder="article-url-slug"
         />
-      </div>
-
-      <div className="space-y-4 border-t border-gray-700 pt-6">
-        <h3 className="text-lg font-medium text-white">Generate Title & Subtitle</h3>
-        
-        <AIGenerationForm
-          onGenerate={handleGenerateTitleSubtitle}
-          prompt={getSubtitlePrompt()}
-          isGenerating={isGenerating}
-          selectedModel={selectedModel}
-          onModelChange={setSelectedModel}
-          selectedTone={selectedTone}
-          onToneChange={setSelectedTone}
-        />
-
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Alternative Title
-          </label>
-          <input
-            type="text"
-            value={formData.alternativeTitle}
-            onChange={(e) => onUpdateForm('alternativeTitle', e.target.value)}
-            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Article Subtitle
-          </label>
-          <input
-            type="text"
-            value={formData.subtitle}
-            onChange={(e) => onUpdateForm('subtitle', e.target.value)}
-            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          />
-        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-6">
@@ -257,6 +220,46 @@ const GeneralInfoTab: React.FC<GeneralInfoTabProps> = ({
           </select>
         </div>
       </div>
+
+      <div className="space-y-4 border-t border-gray-700 pt-6">
+        <h3 className="text-lg font-medium text-white">Generate Title & Subtitle</h3>
+        
+        <AIGenerationForm
+          onGenerate={handleGenerateTitleSubtitle}
+          prompt={getTitlePrompt()}
+          isGenerating={isGenerating}
+          selectedModel={selectedModel}
+          onModelChange={setSelectedModel}
+          selectedTone={selectedTone}
+          onToneChange={setSelectedTone}
+        />
+
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            Alternative Title
+          </label>
+          <input
+            type="text"
+            value={formData.alternative_title}
+            onChange={(e) => onUpdateForm('alternative_title', e.target.value)}
+            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            Article Subtitle
+          </label>
+          <input
+            type="text"
+            value={formData.subtitle}
+            onChange={(e) => onUpdateForm('subtitle', e.target.value)}
+            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+
+      
     </div>
   );
 };

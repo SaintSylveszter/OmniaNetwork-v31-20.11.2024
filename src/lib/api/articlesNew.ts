@@ -5,6 +5,7 @@ interface CreateArticleData {
   category_id: number;
   author_id: number;
   title: string;
+  alternative_title?: string;  // Opțional, va merge în alternative_title
   slug: string;
   subtitle?: string;
   status?: string;
@@ -33,9 +34,10 @@ export async function createNewArticle(connectionString: string, data: CreateArt
       category_id: data.category_id,
       author_id: data.author_id,
       title: data.title,
+      alternative_title: data.alternative_title || '', // Noul câmp
       slug: data.slug,
       subtitle: data.subtitle || '', 
-      status: data.status || 'SCH',
+      status: data.status || 'Scheduled',
       display_order: data.display_order || 0,
       meta_title: data.meta_title || data.title,
       meta_description: data.meta_description || '',
@@ -73,6 +75,7 @@ export async function createNewArticle(connectionString: string, data: CreateArt
         category_id,
         author_id,
         title,
+        alternative_title,
         slug,
         subtitle,
         status,
@@ -90,6 +93,7 @@ export async function createNewArticle(connectionString: string, data: CreateArt
         ${articleData.category_id},
         ${articleData.author_id},
         ${articleData.title},
+        ${articleData.alternative_title},
         ${articleData.slug},
         ${articleData.subtitle},
         ${articleData.status},
