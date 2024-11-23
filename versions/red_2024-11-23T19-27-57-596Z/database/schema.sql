@@ -1,0 +1,71 @@
+-- Sites table
+CREATE TABLE sites (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    server VARCHAR(255) NOT NULL,
+    ip_address VARCHAR(45) NOT NULL,
+    site_type VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Authors table
+CREATE TABLE authors (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    site_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE CASCADE
+);
+
+-- Categories table
+CREATE TABLE categories (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    site_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE CASCADE
+);
+
+-- Articles table
+CREATE TABLE articles (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    site_id INT NOT NULL,
+    category_id INT NOT NULL,
+    author_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    status ENUM('draft', 'published', 'archived') DEFAULT 'draft',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
+    FOREIGN KEY (author_id) REFERENCES authors(id) ON DELETE CASCADE
+);
+
+-- Users table
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('master', 'omniakid') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Site Settings table
+CREATE TABLE site_settings (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    site_id INT NOT NULL,
+    setting_key VARCHAR(255) NOT NULL,
+    setting_value TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_site_setting (site_id, setting_key)
+);

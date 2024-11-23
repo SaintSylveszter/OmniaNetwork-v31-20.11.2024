@@ -1,0 +1,25 @@
+-- OmniaNetwork Database Schema (Server 1: omnianetwork.ro)
+CREATE TABLE sites (
+    id VARCHAR(36) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    server VARCHAR(255) NOT NULL,
+    database_name VARCHAR(255) NOT NULL,
+    db_user VARCHAR(255) NOT NULL,
+    db_password VARCHAR(255) NOT NULL,
+    db_port INT DEFAULT 3306,
+    site_type VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE users (
+    id VARCHAR(36) PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('master', 'omniakid') NOT NULL,
+    site_id VARCHAR(36),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE SET NULL
+);
